@@ -32,6 +32,29 @@ app.get('/frutas', async (req, res) => {
   }
 })
 
+//Obtener todas las frutas
+app.get('/frutas/:id', async (req, res) => {
+  const client = await connectToMongoDB()
+  if (!client) {
+    res.status(500).send('Error al conectarse a la BD')
+  }
+
+  try {
+    const frutaId = parseInt(req.params.id) || 0
+    const db = client.db('frutasDB')
+    const fruta = await db.collection('frutas').findOne({ id: frutaId })
+    if (fruta) {
+      res.json(fruta)
+    } else {
+      res.status(404).send(`No se encontro la fruta con id ${frutaId}`)
+    }
+  } catch (error) {
+    res.status(500).send('Error al obtener la fruta')
+  } finally {
+    await disconnectFromMongoDB()
+  }
+})
+
 //Inicializamos el servidor
 app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`)
