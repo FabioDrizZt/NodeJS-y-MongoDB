@@ -10,3 +10,5 @@ configurar nuestro archivo mongo:
 
 - Cargamos el archivo .env process.loadEnvFile()
 - traemos el cliente: const { MongoClient } = require('mongodb')
+- Conectamos con la connectionString
+- Creamos las funciones de conexión y desconexión
